@@ -6,12 +6,12 @@ global start
 
 section .text
     start:
-        mov rax, 4
-        mov rbx, 1
-        mov rcx, msg
-        mov rdx, msgSize
-        int 0x80
-        mov rax, 1
-        mov rbx, 0
-        int 0x80
-        ret
+    mov eax, 4
+    mov ebx, 1
+    mov ecx, msg
+    mov edx, msgSize
+    int 0x80
+    mov eax, 1
+    mov ebx, 0
+    int 0x80
+    ret
