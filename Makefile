@@ -1,18 +1,28 @@
-BINARY_NAME:=portfolio
-ASMFILES:= main.asm # $(shell find src/* -name "*.asm" -type f)
+# Source and output folders
+SOURCE_DIR := src
+BUILD_DIR  := build
 
-all: test build
-	./$(BINARY_NAME)
+# Source and output files
+BINARY_NAME := portfolio
+SRC := $(shell find $(SOURCE_DIR)/* -name "*.asm" -type f)
 
-.PHONY: build
+# Assembler data
+ASM := nasm
+ASMFLAGS := -f elf64
+
+# Linker data
+LD = ld
+
+all: build
+	./$(BUILD_DIR)/$(BINARY_NAME)
+
 build:
-	nasm -f elf64 -g -F DWARF $(ASMFILES)
-	ld -e start -o $(BINARY_NAME) src/main.o
+	mkdir build
+	$(ASM) $(ASMFLAGS) -g -F DWARF $(SRC) && mv src/*.o build/
+	$(LD) -e _start -o $(BUILD_DIR)/$(BINARY_NAME) $(BUILD_DIR)/main.o
 
-.PHONY: test
-test:
-	echo "Ouais tqt"
-
-.PHONY: clean
 clean:
-	rm -rf $(BINARY_NAME) src/main.o
+	rm -rf $(BUILD_DIR)
+
+# Phony targets
+.PHONY: clean
